@@ -1,14 +1,21 @@
 use actix_web::{web, App, HttpResponse, HttpServer, dev::Server};
-
 use std::net::TcpListener;
+
+#[derive(serde::Deserialize)]
+struct FormData {
+    email: String,
+    name: String
+}
 
 async fn health_check() -> HttpResponse {
     HttpResponse::Ok().finish()
 }
 
-async fn subscribe() -> HttpResponse {
+async fn subscribe(_form: web::Form<FormData>) -> HttpResponse {
     HttpResponse::Ok().finish()
 }
+
+
 
 // We need to mark `run` as public.
 // It is no longer a binary entrypoint, therefore we can mark it as async

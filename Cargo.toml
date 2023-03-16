@@ -24,3 +24,15 @@ path="src/lib.rs"
 [[bin]]
 name = "zero2prod"
 path = "src/main.rs"
+
+[dependencies.sqlx]
+version = "0.6"
+default-features = false
+features = [
+"runtime-tokio-rustls",
+"macros",
+"postgres",
+"uuid",
+"chrono",
+"migrate"
+]

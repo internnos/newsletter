@@ -49,15 +49,6 @@ DATABASE_URL=postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAM
 
 export DATABASE_URL
 sqlx database create
-sqlx migrate add create_subscriptions_table
-
-CREATE TABLE subscriptions (
-    id uuid NOT NULL,
-    PRIMARY KEY (id),
-    email TEXT NOT NULL UNIQUE,
-    name TEXT NOT NULL,
-    subscribed_at timestamptz NOT NULL
-);
-
 sqlx migrate run
->&2 echo "Postgres has been migrated, ready to go!"
+
+# >&2 echo "Postgres has been migrated, ready to go!"

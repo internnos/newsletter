@@ -3,6 +3,9 @@ use zero2prod::startup::run;
 use reqwest;
 
 
+use sqlx::{PgConnection, Connection};
+use zero2prod::configurations::get_configuration;
+
 
 fn spawn_app(endpoint: &str) -> String {
     let listener = TcpListener::bind(format!("{endpoint}:0")).expect("Failed to bind random port");
@@ -32,11 +35,19 @@ async fn health_check_works() {
 }
 
 #[tokio::test]
-async fn subscribe_returns_200_for_valid_data() {
+async fn subscribe_returns_200_for_valid_form_data() {
     let endpoint = "127.0.0.1";
     let address = spawn_app(endpoint);
 
     let client = reqwest::Client::new();
+
+    let configurations = get_configuration().expect("Failed to read config file");
+    let connection_string = configurations.database.connection_string();
+
+    let connection = PgConnection::connect(&connection_string)
+    .await
+    .expect("Failed to connect to postgres");
+
 
     let body = "name=le%20guin&email=ursula_le_guin%40gmail.com";
     let response = client
